@@ -1,10 +1,13 @@
 package dev.gml.herbarium_backend;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
 
 /**
@@ -26,6 +29,9 @@ import org.springframework.security.web.SecurityFilterChain;
 // and provides the Spring MVC integration. It is essential for using the
 // HttpSecurity object to configure rules.
 public class SecurityConfig {
+
+    @Value("${api-endpoint}")
+    private String endpoint;
 
     /**
      * <b> Array of URL patterns that must be accessible without authentication.
@@ -70,11 +76,18 @@ public class SecurityConfig {
         // ----------------------------------------------------------------------------
         // 2. AUTHORIZATION RULES
         // ----------------------------------------------------------------------------
+
+        // Allow H2 console to be displayed in frames
+        http.headers(headers -> headers
+            .frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin)
+        );
+
         // Configure authorization rules (i.e., who can access which path).
         http.authorizeHttpRequests(authorize -> authorize
                 // Allow unauthenticated access to all whitelisted paths (documentation/dev
                 // tools)
                 .requestMatchers(SWAGGER_PATHS).permitAll()
+                .requestMatchers(HttpMethod.POST, endpoint + "/register").permitAll()
 
                 // Temporarily permit all other requests (my actual API endpoints)
                 // This makes development easier for now but means any API call is allowed.
