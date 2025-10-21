@@ -1,10 +1,27 @@
 services:
   mysql:
-    image: 'mysql:latest'
+    image: mysql:8.0 # Use the explicit 8.0 tag instead of latest
+    container_name: herbarium-mysql
     environment:
-      - 'MYSQL_DATABASE=mydatabase'
-      - 'MYSQL_PASSWORD=secret'
-      - 'MYSQL_ROOT_PASSWORD=verysecret'
-      - 'MYSQL_USER=myuser'
+      MYSQL_DATABASE: herbarium_db
+      MYSQL_USER: herbarium_user
+      MYSQL_PASSWORD: secret
+      MYSQL_ROOT_PASSWORD: verysecret
+      MYSQL_ROOT_HOST: '%'  # Allow root connections from any host
     ports:
-      - '3306'
+      - "3307:3306" # (!) External port is 3307, Internal port is 3306
+    volumes:
+      - mysql_data:/var/lib/mysql
+    command: 
+      - --default-authentication-plugin=mysql_native_password
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-pverysecret"]
+      timeout: 30s
+      retries: 10
+      start_period: 30s
+    restart: unless-stopped
+
+volumes:
+  mysql_data:
