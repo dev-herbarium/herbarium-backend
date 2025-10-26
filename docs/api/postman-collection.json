@@ -1,0 +1,764 @@
+{
+	"info": {
+		"_postman_id": "626baf52-1b59-4235-94c7-8951d317f5da",
+		"name": "Herbarium  | REST API basics: CRUD, test & variable",
+		"description": "# 🚧 Herbarium\n\nTests for Herbarium Backend API endpoints.\n\n## 🤔 Overview\n\nHerbarium will be a full-stack web application that allows users to explore a comprehensive database of medicinal plants, save their favorites in a personal dashboard, and create and manage their own herbal recipes and preparation methods.\n\n---\n\n# 🚀 Get started here\n\nThis template guides you through CRUD operations (GET, POST, PUT, DELETE), variables, and tests.\n\n## 🔖 **How to use this template**\n\n#### **Step 1: Send requests**\n\nRESTful APIs allow you to perform CRUD operations using the POST, GET, PUT, and DELETE HTTP methods.\n\nThis collection contains each of these [request](https://learning.postman.com/docs/sending-requests/requests/) types. Open each request and click \"Send\" to see what happens.\n\n#### **Step 2: View responses**\n\nObserve the response tab for status code (200 OK), response time, and size.\n\n#### **Step 3: Send new Body data**\n\nUpdate or add new data in \"Body\" in the POST request. Typically, Body data is also used in PUT request.\n\n```\n{\n    \"name\": \"Add your name in the body\"\n}\n\n ```\n\n#### **Step 4: Update the variable**\n\nVariables enable you to store and reuse values in Postman. We have created a [variable](https://learning.postman.com/docs/sending-requests/variables/) called `base_url` with the sample request [https://postman-api-learner.glitch.me](https://postman-api-learner.glitch.me). Replace it with your API endpoint to customize this collection.\n\n#### **Step 5: Add tests in the \"Scripts\" tab**\n\nAdding tests to your requests can help you confirm that your API is working as expected. You can write test scripts in JavaScript and view the output in the \"Test Results\" tab.\n\n<img src=\"https://content.pstmn.io/fa30ea0a-373d-4545-a668-e7b283cca343/aW1hZ2UucG5n\" width=\"2162\" height=\"1530\">\n\n## 💪 Pro tips\n\n- Use folders to group related requests and organize the collection.\n    \n- Add more [scripts](https://learning.postman.com/docs/writing-scripts/intro-to-scripts/) to verify if the API works as expected and execute workflows.\n    \n\n## 💡Related templates\n\n[API testing basics](https://go.postman.co/redirect/workspace?type=personal&collectionTemplateId=e9a37a28-055b-49cd-8c7e-97494a21eb54&sourceTemplateId=ddb19591-3097-41cf-82af-c84273e56719)  \n[API documentation](https://go.postman.co/redirect/workspace?type=personal&collectionTemplateId=e9c28f47-1253-44af-a2f3-20dce4da1f18&sourceTemplateId=ddb19591-3097-41cf-82af-c84273e56719)  \n[Authorization methods](https://go.postman.co/redirect/workspace?type=personal&collectionTemplateId=31a9a6ed-4cdf-4ced-984c-d12c9aec1c27&sourceTemplateId=ddb19591-3097-41cf-82af-c84273e56719)",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "47983382",
+		"_collection_link": "https://gabrielmljob-8636619.postman.co/workspace/Gabriel-ML's-Workspace~dc83f16f-02cb-4e6e-8f48-7cb8abd17b5b/collection/47983382-626baf52-1b59-4235-94c7-8951d317f5da?action=share&source=collection_link&creator=47983382"
+	},
+	"item": [
+		{
+			"name": "1. User Registration Tests(10) [Herbarium]",
+			"item": [
+				{
+					"name": "1. User Registration 1o10 Success [201 Created][Herbarium]",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// This test is performed at the level of the \"RegisterController.java\".",
+									"pm.test(\"Successful POST request\", function () {",
+									"    pm.expect(pm.response.code).to.be.oneOf([200, 201]);",
+									"",
+									"    var jsonData = {};",
+									"",
+									"    try {",
+									"        jsonData = pm.response.json();",
+									"    } catch (error) {",
+									"        // If response is not a JSON, fail the test:",
+									"        pm.expect.fail('Response is not valid JSON: ' + error);",
+									"    }",
+									"    ",
+									"    // Check JSON properties to have the expected values:",
+									"    pm.expect(jsonData).to.have.property('message', 'User registered successfully');",
+									"    pm.expect(jsonData).to.have.property('email', 'test@herbarium.com');",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"test@herbarium.com\",\n    \"password\": \"c2VjcmV0MTIz\",\n    \"confirmPassword\": \"c2VjcmV0MTIz\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/v1/register",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"v1",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "1. User Registration 2o10 Invalid Base64 [400 Bad Request][Herbarium]",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// This test is performed at the level of the \"RegisterService.java\".",
+									"pm.test(\"It should pass if password is not Base64 encoded\", function () {",
+									"    pm.expect(pm.response.code).to.eql(400);",
+									"",
+									"    var jsonData = {};",
+									"",
+									"    try {",
+									"        jsonData = pm.response.json();",
+									"    } catch (error) {",
+									"        // If response is not a JSON, fail the test:",
+									"        pm.expect.fail('Response is not valid JSON: ' + error);",
+									"    }",
+									"    ",
+									"    // Check JSON properties to have the expected values:",
+									"    pm.expect(jsonData).to.have.property('message', 'Registration failed: Invalid password encoding!');",
+									"    pm.expect(jsonData).to.have.property('email', 'notBase64@test.com');",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"notBase64@test.com\",\n    \"password\": \"not-valid-base64!\",\n    \"confirmPassword\": \"not-valid-base64!\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/v1/register",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"v1",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "1. User Registration 3o10 Required Email [400 Bad Request][Herbarium]",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Test that an Email address has NOT been entered.",
+									"// This check is performed at the level of the \"RegisterDTORequest.java\" file",
+									"// thanks to  \"import jakarta.validation.constraints.NotBlank\"",
+									"pm.test(\"It should pass if no Email has been entered.\", function(){",
+									"    pm.expect(pm.response.code).to.eql(400);",
+									"    ",
+									"    var jsonData = {};",
+									"    try {",
+									"        jsonData = pm.response.json();",
+									"    } catch (e) {",
+									"        // If response is not JSON, fail the test:",
+									"        pm.expect.fail('Response is not valid JSON');",
+									"    }",
+									"",
+									"    // Check the returned JSON object against the expected key-value pairs: ",
+									"    pm.expect(jsonData).to.have.property('message', 'Registration failed: Email is required!');",
+									"    pm.expect(jsonData).to.have.property('email', null);",
+									"    pm.expect(jsonData).to.have.property('userId', null);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"content-type": true
+						}
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"\",\n  \"password\": \"123\",\n  \"confirmPassword\": \"123\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/v1/register",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"v1",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "1. User Registration 4o10 Duplicate Email [400 Bad Request][Herbarium]",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Test for registration failure due to already registered email (positive result if matches).",
+									"// This check is performed at the level of the \"RegisterService.java\"",
+									"pm.test(\"Returns positive result if registration failed due to already registered email\", function () {",
+									"    pm.expect(pm.response.code).to.eql(400);",
+									"    var jsonData = {};",
+									"",
+									"    try {",
+									"        jsonData = pm.response.json();",
+									"    } catch (e) {",
+									"        // If response is not a JSON fail the test:",
+									"        pm.expect.fail('Response is not a valid JSON');",
+									"    }",
+									"",
+									"    pm.expect(jsonData).to.have.property('message', 'Registration failed: Email already registered');",
+									"    pm.expect(jsonData).to.have.property('email', 'test@herbarium.com');",
+									"    pm.expect(jsonData).to.have.property('userId', null);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"content-type": true
+						}
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"test@herbarium.com\",\n  \"password\": \"password123\",\n  \"confirmPassword\": \"password123\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/v1/register",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"v1",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "1. User Registration 5o10 Invalid Email Format [400 Bad Request][Herbarium]",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Positive test: Passes only if \"Invalid Email Format\" is correctly detected by the API",
+									"// This check is performed at the level of the \"RegisterDTORequest.java\" file thanks to",
+									"// \"import jakarta.validation.constraints.Email\"",
+									"pm.test('Positive: Invalid Email Format Detected', function () {",
+									"    pm.expect(pm.response.code).to.eql(400);",
+									"    var jsonData = {};",
+									"",
+									"    try {",
+									"        jsonData = pm.response.json();",
+									"    } catch (e) {",
+									"        // If response is not JSON, fail the test",
+									"        pm.expect.fail('Response is not valid JSON');",
+									"    }",
+									"",
+									"    // Check for message indicating invalid email format:",
+									"    pm.expect(jsonData).to.have.property('message');",
+									"    pm.expect(jsonData.message.toLowerCase()).to.include('email');",
+									"    pm.expect(jsonData.message.toLowerCase()).to.include('invalid');",
+									"",
+									"    // Check for \"email\" having \"null\" value:",
+									"    pm.expect(jsonData).to.have.property('email', null);",
+									"",
+									"    // Check for \"userId\" having \"null\" value:",
+									"    pm.expect(jsonData).to.have.property('userId', null);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"content-type": true
+						}
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"not-an-email\",\n    \"password\": \"password123\",\n    \"confirmPassword\": \"password123\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/v1/register",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"v1",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "1. User Registration 6o10 Required Password [400 Bad Request][Herbarium]",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Test that a Password has NOT been entered.",
+									"// This check is performed at the level of the \"RegisterDTORequest.java\" file",
+									"// thanks to  \"import jakarta.validation.constraints.NotBlank\"",
+									"pm.test(\"It should pass if no Password has been entered.\", function(){",
+									"    pm.expect(pm.response.code).to.eql(400);",
+									"    ",
+									"    var jsonData = {};",
+									"    try {",
+									"        jsonData = pm.response.json();",
+									"    } catch (e) {",
+									"        // If response is not JSON, fail the test:",
+									"        pm.expect.fail('Response is not valid JSON');",
+									"    }",
+									"",
+									"    // Check the returned JSON object against the expected key-value pairs: ",
+									"    pm.expect(jsonData).to.have.property('message', 'Registration failed: Password is required!');",
+									"    pm.expect(jsonData).to.have.property('email', null);",
+									"    pm.expect(jsonData).to.have.property('userId', null);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"content-type": true
+						}
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"requiredPassword@test.com\",\n  \"password\": \"\",\n  \"confirmPassword\": \"123\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/v1/register",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"v1",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "1. User Registration 7o10 Required Password Confirmation [400 Bad Request][Herbarium]",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Test that the \"Password Confirmation\" has NOT been entered.",
+									"// This check is performed at the level of the \"RegisterDTORequest.java\" file",
+									"// thanks to  \"import jakarta.validation.constraints.NotBlank\"",
+									"pm.test(\"It should pass if no email has been entered.\", function(){",
+									"    pm.expect(pm.response.code).to.eql(400);",
+									"    ",
+									"    var jsonData = {};",
+									"    try {",
+									"        jsonData = pm.response.json();",
+									"    } catch (e) {",
+									"        // If response is not JSON, fail the test:",
+									"        pm.expect.fail('Response is not valid JSON');",
+									"    }",
+									"",
+									"    // Check the returned JSON object against the expected key-value pairs: ",
+									"    pm.expect(jsonData).to.have.property('message', 'Registration failed: Password confirmation is required!');",
+									"    pm.expect(jsonData).to.have.property('email', null);",
+									"    pm.expect(jsonData).to.have.property('userId', null);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"content-type": true
+						}
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"requiredPasswordConfirmation@test.com\",\n  \"password\": \"123456\",\n  \"confirmPassword\": \"\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/v1/register",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"v1",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "1. User Registration 8o10 Password Mismatch [400 Bad Request][Herbarium]",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// \"Password Mismatch\" Test. ",
+									"// It should work if the password entered in the \"confirmPassword\" field does not match the password in the \"password\" field.",
+									"// This check is performed at the level of the \"RegisterService.java\"",
+									"// just before the validation password strength (before decoding!)",
+									"pm.test(\"Returns positive result if both passwords, 'password' and 'confirmPassword' fields, do not match.\", function(){",
+									"    pm.expect(pm.response.code).to.eql(400);",
+									"    ",
+									"    var jsonData = {};",
+									"    try {",
+									"        jsonData = pm.response.json();",
+									"    } catch (e) {",
+									"        // If response is not JSON, fail the test:",
+									"        pm.expect.fail('Response is not valid JSON');",
+									"    }",
+									"",
+									"    pm.expect(jsonData).to.have.property('message', 'Registration failed: Passwords do not match');",
+									"    pm.expect(jsonData).to.have.property('email', 'passwordMismatch@test.com');",
+									"    pm.expect(jsonData).to.have.property('userId', null);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"content-type": true
+						}
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"passwordMismatch@test.com\",\n  \"password\": \"password123\",\n  \"confirmPassword\": \"differentpassword\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/v1/register",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"v1",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "1. User Registration 9o10 Short NotBase64 Password [400 Bad Request][Herbarium]",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Test Short Password.",
+									"// This check is performed at the level of the \"RegisterDTORequest.java\" file",
+									"// thanks to  \"import jakarta.validation.constraints.Size\"",
+									"pm.test(\"It should pass if password is less than 6 characters\", function(){",
+									"    pm.expect(pm.response.code).to.eql(400);",
+									"    var jsonData = {};",
+									"    try {",
+									"        jsonData = pm.response.json();",
+									"    } catch (e) {",
+									"        // If response is not JSON, fail the test:",
+									"        pm.expect.fail('Response is not valid JSON');",
+									"    }",
+									"",
+									"    // Check the returned JSON object against the expected key-value pairs: ",
+									"    pm.expect(jsonData).to.have.property('message', 'Registration failed: The password is too short. It must be at least six characters!');",
+									"    pm.expect(jsonData).to.have.property('email', null);",
+									"    pm.expect(jsonData).to.have.property('userId', null);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"content-type": true
+						}
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"shortPasswordThatIsNotBase64Encoded@test.com\",\n  \"password\": \"123\",\n  \"confirmPassword\": \"123\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/v1/register",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"v1",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "1. User Registration 10o10 Short Base64 Password [400 Bad Request][Herbarium]",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Test Short Base64 Password decoded.",
+									"// This check is performed at the \"RegistrationController.java\" level ",
+									"// after bypassing the Jakarta Validation check in the ",
+									"// \"RegisterDTORequest.java\" file.",
+									"// Note: \"c2hvcnQ=\" is Base64 for \"short\".",
+									"pm.test(\"It should PASS if the base64 password after decoding is less than 6 characters!\", function(){",
+									"    pm.expect(pm.response.code).to.eql(400);",
+									"    var jsonData = {};",
+									"    try {",
+									"        jsonData = pm.response.json();",
+									"    } catch (e) {",
+									"        // If response is not JSON, fail the test:",
+									"        pm.expect.fail('Response is not valid JSON');",
+									"    }",
+									"",
+									"    // Check the returned JSON object against the expected key-value pairs: ",
+									"    pm.expect(jsonData).to.have.property('message', 'Registration failed: Password must be at least 6 characters');",
+									"    pm.expect(jsonData).to.have.property('email', 'shortDecodedPasswordBase64@herbarium.com');",
+									"    pm.expect(jsonData).to.have.property('userId', null);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"content-type": true
+						}
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"shortDecodedPasswordBase64@herbarium.com\",\n  \"password\": \"c2hvcnQ=\",\n  \"confirmPassword\": \"c2hvcnQ=\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/v1/register",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"v1",
+								"register"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "0. Get Status [200 OK][Herbarium]",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/status",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"status"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "id",
+			"value": "1"
+		},
+		{
+			"key": "base_url",
+			"value": "https://template.postman-echo.com"
+		}
+	]
+}
