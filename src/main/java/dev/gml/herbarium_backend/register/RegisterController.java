@@ -4,6 +4,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.MethodArgumentNotValidException;
+
+import jakarta.validation.Valid;
 
 import org.springframework.web.bind.annotation.RequestBody; 
 
@@ -18,7 +22,7 @@ public class RegisterController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<RegisterDTOResponse> registerUser(@RequestBody RegisterDTORequest dto) {
+    public ResponseEntity<RegisterDTOResponse> registerUser(@Valid @RequestBody RegisterDTORequest dto) {
         try {
             var user = service.registerUser(dto);
             
@@ -40,5 +44,23 @@ public class RegisterController {
 
             return ResponseEntity.badRequest().body(response);
         }
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<RegisterDTOResponse> handleValidationExceptions(MethodArgumentNotValidException ex){
+        String errorMessage = ex.getBindingResult()
+            .getFieldErrors()
+            .stream()
+            .map(error -> error.getDefaultMessage())
+            .findFirst()
+            .orElse("Validation failed");
+
+        var response = RegisterDTOResponse.builder()
+            .message("Registration failed: " + errorMessage)
+            .email(null)
+            .userId(null)
+            .build();
+
+        return ResponseEntity.badRequest().body(response);
     }
 }
