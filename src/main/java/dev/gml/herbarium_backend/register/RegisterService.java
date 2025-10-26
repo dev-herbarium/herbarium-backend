@@ -32,6 +32,11 @@ public class RegisterService {
             throw new IllegalArgumentException("Email already registered");
         }
 
+        // Validate email format:
+        if (!isValidEmail(dto.email())) {
+            throw new IllegalArgumentException("Email should be valid");
+        }
+
         // Validate passwords match
         if (!dto.passwordsMatch()) {
             throw new IllegalArgumentException("Passwords do not match");
@@ -55,5 +60,11 @@ public class RegisterService {
             .build();
 
         return userService.save(newUser);
+    }
+
+    // Basic email validation
+    private boolean isValidEmail(String email) {
+        String emailRegex = "^[A-Za-z0-9+_.-]+@(.+)$";
+        return email != null && email.matches(emailRegex);
     }
 }
