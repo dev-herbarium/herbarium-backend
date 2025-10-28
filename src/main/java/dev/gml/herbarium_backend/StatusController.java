@@ -4,6 +4,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 /**
@@ -16,15 +20,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
  * The Controller layer is the entry point for all externall HTTP requests.
  */
 @RestController
-// @RestController: This is a composite annotation combining @Controller and
-// @ResponseBody. It tells Spring:
-// 1. This class handles web requests.
-// 2. All method return values should be automatically serialized into
-// the HTTP response body (e.g., JSON or, in this case, a simple string).
-@Tag(name = "Health Check", description = "Endpoints for verifying application status and health.")
-// @Tag (from Swagger): Defines a group/category for the API documentation
-// in the Swagger UI. All operations in this controller will be listed under
-// the "Health Check" category
+@Tag(name = "❤️ Health Check", description = "Endpoints for verifying application status and health.")
 public class StatusController {
 
     // private final: The standard practice for fields that hold dependencies.
@@ -52,11 +48,20 @@ public class StatusController {
      * @return A simple status string ("Herbarium-Backend is Active!").
      */
     @GetMapping("/api/status")
-    // @GetMapping: Maps HTTP GET request to the specified URL path.
-    // When a user hits "http://localhost:8080/api/status", this method is executed.
-    @Operation(summary = "Get application health status", description = "Returns a simple status string.")
-    // @Operation (from Swagger): Provides detailed, per-method documentation
-    // for the Swagger UI, including the short summary and the longer description.
+    @Operation(
+        summary = "Get application health status",
+        description = "Returns a simple status string to verify the application is running correctly."
+    )
+    @ApiResponses({
+            @ApiResponse(
+                responseCode = "200",
+                description = "Application is running normally",
+                content = @Content(
+                    mediaType = "text/plain",
+                    examples = {
+                        @ExampleObject(value = "Herbarium-Backend is Active!")
+            }))
+    })
     public String getStatus() {
         // Delegate: The Controller's job is to route and handle HTTP concerns,
         // while the Service's job is to handle business logic. This line
