@@ -34,6 +34,9 @@ public class StatusController {
      * This is the preferred way to handle dependencies in Spring. When Spring
      * creates an instance of this controller, it automatically finds the
      * required 'HerbariumJacocoService' bean and passes it into this constructor.
+     * </p>
+     * 
+     * @param service The service for health status operations
      */
     public StatusController(HerbariumJacocoService service) {
         // Assigns the injected service instance to the local final field.
