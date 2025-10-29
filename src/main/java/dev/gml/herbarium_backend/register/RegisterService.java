@@ -36,13 +36,15 @@ import dev.gml.herbarium_backend.user.UserService;
  *   <li>RoleService - Default role assignment</li>
  *   <li>Encryption Facades - Password processing</li>
  * </ul>
+ * 
+ * <p><b>Note:</b> The {@code @Service} annotation indicates this is a
+ * Spring service component.</p>
  *
  * @author gml
  * @version 1.0
  * @since 2025
  * @see UserEntity
  * @see RegisterDTORequest
- * @service indicates this is a Spring service component
  */
 @Service
 public class RegisterService {

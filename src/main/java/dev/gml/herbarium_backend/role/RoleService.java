@@ -9,14 +9,14 @@ import org.springframework.stereotype.Service;
  * <b>Service Layer for role-related business operations</b>
  * <p>
  * This service handles role management logic and provides methods for
- * role assigment and retrieval. It encapsulates the business rules
+ * role assignment and retrieval. It encapsulates the business rules
  * around role management and acts as an intermediary between the
  * application logic and data access layer.
  * <p>
  * <b>Key Responsibilities:</b>
  * <ul>
  *      <li>Role retrieval by identifier</li>
- *      <li>Default role assigment for new users</li>
+ *      <li>Default role assignment for new users</li>
  *      <li>Business logic encapsulation for role operations</li>
  * </ul>
  * <p>
@@ -25,12 +25,14 @@ import org.springframework.stereotype.Service;
  * assumes specific data setup in the database. This dependency should
  * be documented and managed carefully.
  * 
+ * <p><b>Note:</b> The {@code @Service} annotation indicates this is a
+ * Spring service component.</p>
+ * 
  * @author gml
  * @version 1.0
  * @since 2025
  * @see RoleEntity
  * @see RoleRepository
- * @service indicates this is a Spring service component
  */
 @Service
 public class RoleService {

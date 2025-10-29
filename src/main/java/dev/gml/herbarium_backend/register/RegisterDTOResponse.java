@@ -16,6 +16,12 @@ import lombok.Builder;
  *   <li><b>Success:</b> Contains user ID, email, and success message</li>
  *   <li><b>Error:</b> Contains error message, submitted email, and null user ID</li>
  * </ul>
+ * 
+ * <p>
+ * <b>Note: </b>
+ * The {@code @Builder} annotation enables 
+ * fluent object creation using the builder pattern.
+ * </p>
  *
  * @param message Descriptive message indicating success or failure
  * @param email The email address from the registration attempt
@@ -25,7 +31,6 @@ import lombok.Builder;
  * @since 2025
  * @see RegisterDTORequest
  * @see RegisterController
- * @Builder enables fluent object creation using the builder pattern
  */
 @Builder
 public record RegisterDTOResponse(

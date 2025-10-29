@@ -9,19 +9,21 @@ import org.springframework.stereotype.Service;
  * between the Controller Layer and the Data Access Layer. It encapsulates
  * business rules and transaction boundaries for user operations.
  * <p>
- * <b>Responsabilities:</b>
+ * <b>Responsibilities:</b>
  * <ul>
  *      <li>User persistence operations</li>
  *      <li>User retrieval by email</li>
  *      <li>Business logic validation (delegated to other services)</li>
  * </ul>
  * 
+ * <p><b>Note:</b> The {@code @Service} annotation indicates this is a
+ * Spring service component.</p>
+ * 
  * @author gml
  * @version 1.0
  * @since 2025
  * @see UserEntity
  * @see UserRepository
- * @service indicates this is a Spring service component
  */
 @Service
 public class UserService {
@@ -67,7 +69,7 @@ public class UserService {
      * Searches for a user with the specified email address. If no user is found,
      * throws a {@link RuntimeException} with a descriptive message.
      * 
-     * @param email The email address to seach for.
+     * @param email The email address to search for.
      * @return The found user entity.
      * @throws RuntimeException If no user is found with the given email.
      * @throws IllegalArgumentException If the email parameter is {@code null} or empty.

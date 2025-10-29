@@ -24,13 +24,15 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
  *   <li>Resistance to brute-force and rainbow table attacks</li>
  *   <li>Industry-standard password security</li>
  * </ul>
- *
+ * 
+ * <p><b>Note:</b> The {@code @Component} annotation indicates this is a
+ * Spring component for dependency injection.</p>
+ * 
  * @author gml
  * @version 1.0
  * @since 2025
  * @see IEncryptFacade
  * @see BCryptPasswordEncoder
- * @component indicates this is a Spring component for dependency injection
  */
 @Component
 public class EncryptFacade implements IEncryptFacade {

@@ -24,13 +24,15 @@ import java.util.Base64;
  *   <li>Provides the first step in the password processing pipeline</li>
  *   <li>Ensures proper handling of malformed encoded data</li>
  * </ul>
+ * 
+ * <p><b>Note:</b> The {@code @Component} annotation indicates this is a
+ * Spring component for dependency injection.</p>
  *
  * @author gml
  * @version 1.0
  * @since 2025
  * @see IDecryptFacade
  * @see Base64
- * @component indicates this is a Spring component for dependency injection
  */
 @Component
 public class DecryptFacade implements IDecryptFacade {
