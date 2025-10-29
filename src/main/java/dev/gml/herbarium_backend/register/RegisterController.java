@@ -21,31 +21,78 @@ import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.RequestBody;
 
 /**
- * <b> REGISTER CONTROLLER </b>
+ * <b>Register Controller</b>
  * <p>
  * Handles user registration operations including validation and error handling.
- * This controller manages the complete user registration workflow.
+ * This controller manages the complete user registration workflow from HTTP request
+ * to user creation in the database.
+ * 
+ * <p>
+ * <b>Key Responsibilities:</b>
+ * <ul>
+ *      <li>Receive and validate user registration requests</li>
+ *      <li>Handle registration success and error responses</li>
+ *      <li>Manage validation exceptions and format error messages</li>
+ *      <li>Provide consistent API response structure</li>
+ * </ul>
+ * 
+ * <p>
+ * <b>Registration Flow:</b>
+ * <ol>
+ *      <li>Validate request body using Jakarta Validation</li>
+ *      <li>Delegate business logic to {@link RegisterService}</li>
+ *      <li>Format successful response with user details</li>
+ *      <li>Handle and format validation errors</li>
+ * </ol>
+ * 
+ * @author gml
+ * @version 1.0
+ * @since 2025
+ * @see RegisterService
+ * @see RegisterDTORequest
+ * @see RegisterDTOResponse
  */
 @RestController
 @RequestMapping("${api-endpoint}")
 @Tag(name = "✍ User Registration", description = "Endpoints for user registration and account creation.")
 public class RegisterController {
 
+    /**
+     * Service Layer for handling registration business logic.
+     */
     private final RegisterService service;
 
+    /**
+     * Constructs a new RegisterController with the required service dependency.
+     *
+     * @param service The registration service for business logic operations
+     * @throws IllegalArgumentException if service is null
+     */
     public RegisterController(RegisterService service) {
         this.service = service;
     }
 
     /**
-     * <b> Register New User </b>
+     * <b>Register New User</b>
      * <p>
      * Creates a new user account with the provided registration details.
      * Passwords must be Base64 encoded and will be hashed with BCrypt before
      * storage.
      * 
-     * @param dto
-     * @return
+     * <p>
+     * <b>Request Processing:</b>
+     * <ol>
+     *      <li>Validates request body using {@code @Valid} annotation</li>
+     *      <li>Delegates to service layer for business logic</li>
+     *      <li>Returns appropriate HTTP status codes</li>
+     *      <li>Provides consistent JSON response format</li>
+     * </ol>
+     * 
+     * @param dto The registration Data Transfer Object (DTO) containig user details
+     * @return ResponseEntity containing registration result with appropriate HTTP status
+     * @throws IllegalArgumentException via service Layer for business rule violations
+     * @see RegisterDTORequest
+     * @see RegisterDTOResponse
      */
     @PostMapping("/register")
     @Operation(summary = "Register a new user", description = """
@@ -127,6 +174,17 @@ public class RegisterController {
         }
     }
 
+    /**
+     * <b>Handle Validation Exceptions</b>
+     * <p>
+     * Exception handler for {@link MethodArgumentNotValidException} that occurs
+     * when request body validation fails. Extracts the first validation error
+     * message and formats a consistent error response.
+     * 
+     * @param ex The validation exception containing field errors
+     * @return ResponseEntity with validation error details and 400 Bad Request status
+     * @see MethodArgumentNotValidException
+     */
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<RegisterDTOResponse> handleValidationExceptions(MethodArgumentNotValidException ex) {
         String errorMessage = ex.getBindingResult()
