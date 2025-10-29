@@ -11,13 +11,14 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 /**
- * <b> STATUS CONTROLLER (MOCK) </b>
- * <p>
- * This file is for configuration &amp; testing purposes only! It demonstrates
- * the basic
- * structure of a Spring REST controller and allows for basic health checks.
- * <p>
- * The Controller layer is the entry point for all externall HTTP requests.
+ * <b>Status Controller for health checks and application monitoring</b>
+ * 
+ * <p>This controller demonstrates the basic structure of a Spring REST controller
+ * and provides endpoints for basic health checks and application status verification.</p>
+ * 
+ * <p><b>Architecture Note:</b> The controller layer serves as the entry point for
+ * all external HTTP requests, following the "Thin Controller, Thick Service" pattern
+ * where business logic is delegated to service layers.</p>
  */
 @RestController
 @Tag(name = "❤️ Health Check", description = "Endpoints for verifying application status and health.")
