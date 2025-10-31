@@ -3,17 +3,16 @@ package dev.gml.herbarium_backend;
 import org.springframework.stereotype.Service;
 
 /**
- * <b>For configuration &amp; testing purposes only!</b>
- * <p>
- * Primarily for the <a href="https://www.eclemma.org/jacoco/">JaCoCo</a>
- * &amp; <a href="https://docs.oracle.com/javase/8/docs/technotes/tools/windows/javadoc.html">JavaDoc</a>
- * plugins.
- * <p>
- * Service layer component responsible for core Herbarium business logic,
- * primarily for status checks &amp; simple calculations.
+ * Service layer component for JaCoCo and JavaDoc plugin testing purposes.
+ * 
+ * <p><b>Primary use:</b> Configuration and testing for code coverage and documentation tools.
+ * Contains core Herbarium business logic for status checks and simple calculations.</p>
  * 
  * @author gml
  * @version 1.0
+ * @since 2025
+ * @see <a href="https://www.eclemma.org/jacoco/">JaCoCo Code Coverage Tool</a>
+ * @see <a href="https://docs.oracle.com/javase/8/docs/technotes/tools/windows/javadoc.html">JavaDoc Tool</a>
  */
 @Service
 public class HerbariumJacocoService {

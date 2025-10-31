@@ -11,3 +11,6 @@ MERGE INTO users (id_user, email, password, created_at, updated_at) KEY(id_user)
 -- Assign roles to users
 MERGE INTO roles_users (role_id, user_id) KEY(role_id, user_id) VALUES (1, 1);
 MERGE INTO roles_users (role_id, user_id) KEY(role_id, user_id) VALUES (2, 2);
+
+-- (!) RESET the "auto-increment sequence" to start from 3
+ALTER TABLE users ALTER COLUMN id_user RESTART WITH 3;

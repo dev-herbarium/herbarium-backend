@@ -1,4 +1,4 @@
-/* H2 - SPECIFIC DATA */
+/* MySQL - SPECIFIC DATA */
 -- Herbarium Database Initialization - MySQL Compatible using conditional execution
 
 -- Remove existing data to avoid duplicates

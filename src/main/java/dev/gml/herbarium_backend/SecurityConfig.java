@@ -11,15 +11,17 @@ import org.springframework.security.config.annotation.web.configurers.HeadersCon
 import org.springframework.security.web.SecurityFilterChain;
 
 /**
- * <b> Spring Security Configuration for development.</b>
- * <p>
- * This class customizes Spring Security's default behavior. Its primary
- * role is to explicitly whitelist paths needed for development and
- * documentation
- * (<a href="https://swagger.io/">Swagger</a> UI and
- * <a href="https://www.h2database.com/html/main.html">H2</a> Console) to
- * prevent
- * the application from redirecting unauthenticated request to a login form.
+ * <b>Spring Security Configuration for development environment</b>
+ * 
+ * <p>This class customizes Spring Security's default behavior to explicitly whitelist
+ * paths required for development and documentation tools, preventing unauthenticated
+ * requests from being redirected to a login form.</p>
+ * 
+ * <p><b>Security Note:</b> Current configuration is suitable for development only.
+ * Production deployment requires proper authentication and CSRF protection.</p>
+ * 
+ * @see <a href="https://swagger.io/">Swagger API Documentation</a>
+ * @see <a href="https://www.h2database.com/html/main.html">H2 Database Console</a>
  */
 @Configuration
 // @Configuration: Marks this class as a source of bean definitions.
@@ -34,10 +36,10 @@ public class SecurityConfig {
     private String endpoint;
 
     /**
-     * <b> Array of URL patterns that must be accessible without authentication.
-     * </b>
+     * <b>Array of URL patterns that must be accessible without authentication</b>
      * <p>
      * Includes all paths required for API documentation and development tools.
+     * </p>
      */
     private static final String[] SWAGGER_PATHS = {
             "/swagger-ui.html", // The main Swagger UI page.
@@ -48,15 +50,14 @@ public class SecurityConfig {
     };
 
     /**
-     * <b> Defines the Security Filter Chain, which is the core of Spring Security.
-     * </b>
-     * <p>
-     * This bean specifies the custom security rules that are applied to incoming
-     * request.
+     * <b>Defines the Security Filter Chain, which is the core of Spring Security.</b>
      * 
-     * @param http The HttpSecurity object used to build security configuration.
-     * @return The configured {@link SecurityFilterChain} bean.
-     * @throws Exception
+     * <p>This bean specifies the custom security rules applied to incoming HTTP requests,
+     * including CSRF configuration, authorization rules, and authentication mechanisms.</p>
+     * 
+     * @param http The HttpSecurity object used to build security configuration
+     * @return The configured {@link SecurityFilterChain} bean
+     * @throws Exception If security configuration fails during setup due to invalid rules
      */
     @Bean
     // @Bean: Makes the resulting SecurityFilterChain object available in the Spring

@@ -7,12 +7,14 @@ import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
 
 /**
- * <b>OPENAPI (<a href="https://swagger.io/">Swagger</a>) Configuration for the
- * Herbarium Backend API. </b>
- * <p>
- * This class defines the metadata that will appear at the top of the
- * Swagger UI (API Documentation) page. It establishes the central
- * contract for the REST API consumed by the frontend application.
+ * <b>OpenAPI (Swagger) Configuration for the Herbarium Backend API</b>
+ * 
+ * <p>This class defines the metadata displayed in the Swagger UI documentation page.
+ * It establishes the central contract for the REST API consumed by frontend applications.</p>
+ * 
+ * <p><b>Note:</b> The {@code @Configuration} annotation informs the Spring IoC Container
+ * that this class contains {@code @Bean} methods that should be processed to generate
+ * bean definitions and service requests at runtime.</p>
  */
 @Configuration
 // @Configuration: This is a Spring annotation that tells the Spring IoC
@@ -22,8 +24,7 @@ import io.swagger.v3.oas.models.info.Info;
 public class OpenApiConfig {
 
     /**
-     * <p>
-     * Defines the custom OpenAPI object with metadata. </b>
+     * <b>Defines the custom OpenAPI object with metadata</b>
      * 
      * @return The configured OpenAPI object.
      */
