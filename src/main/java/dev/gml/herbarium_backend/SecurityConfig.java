@@ -1,5 +1,7 @@
 package dev.gml.herbarium_backend;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -9,6 +11,9 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 /**
  * <b>Spring Security Configuration for development environment</b>
@@ -63,6 +68,11 @@ public class SecurityConfig {
     // @Bean: Makes the resulting SecurityFilterChain object available in the Spring
     // context.
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http
+        // ----------------------------------------------------------------------------
+        // 0. (!) CORS: Enables CORS using the configuration defined in corsConfigurationSource()
+        // ----------------------------------------------------------------------------
+        .cors(cors -> cors.configurationSource(corsConfigurationSource()))
         // ----------------------------------------------------------------------------
         // 1. CROSS-SITE REQUEST FORGERY (CSRF)
         // ----------------------------------------------------------------------------
@@ -72,19 +82,19 @@ public class SecurityConfig {
         // NOTE: This is generally unsafe for browser-based (stateful) applications
         // and must be re-enabled or configured properly for production environments!
         // TODO: Revisit CSRF configuration for production!
-        http.csrf(AbstractHttpConfigurer::disable);
+        .csrf(AbstractHttpConfigurer::disable)
 
         // ----------------------------------------------------------------------------
         // 2. AUTHORIZATION RULES
         // ----------------------------------------------------------------------------
 
         // Allow H2 console to be displayed in frames
-        http.headers(headers -> headers
+        .headers(headers -> headers
             .frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin)
-        );
+        )
 
         // Configure authorization rules (i.e., who can access which path).
-        http.authorizeHttpRequests(authorize -> authorize
+        .authorizeHttpRequests(authorize -> authorize
                 // Allow unauthenticated access to all whitelisted paths (documentation/dev
                 // tools)
                 .requestMatchers(SWAGGER_PATHS).permitAll()
@@ -95,7 +105,7 @@ public class SecurityConfig {
                 // TODO: This is generally unsafe. Must be changed to
                 // `.anyRequest().authenticated()`
                 // for production to enforce token-based security on all endpoints.
-                .anyRequest().permitAll());
+                .anyRequest().permitAll())
 
         // ---------------------------------------------------------------------------
         // 3. AUTHENTICATION MECHANISM
@@ -103,10 +113,26 @@ public class SecurityConfig {
         // Disable the default login form provided by Spring Security.
         // If this were left enabled, any request to a protected path would be
         // redirected to the browser-based sign-in form.
-        http.formLogin(AbstractHttpConfigurer::disable);
+        .formLogin(AbstractHttpConfigurer::disable);
 
         // Finalize the configuration and return the filter chain.
         return http.build();
     }
 
+    // Global CORS configuration to allow the frontend to communicate with the backend
+    @Bean
+    CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+
+        // (!) Change the URL if your frontend runs on a different port or domain.
+        configuration.setAllowedOrigins(List.of("http://localhost:5173"));
+        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        configuration.setAllowedHeaders(List.of("*"));
+        configuration.setAllowCredentials(true); // Required if "cookies" or "auth headers" are used.
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+
+        return source;
+    }
 }
