@@ -49,7 +49,7 @@ graph TB
     
     %% External API
     subgraph "External API"
-        K[Perenual API<br/><a href='https://perenual.com'>https://perenual.com</a>]
+        K[Perenual API<br/><a href='https://perenual.com' target='_blank'>https://perenual.com</a>]
     end
     
     %% Data Flow
