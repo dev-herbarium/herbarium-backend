@@ -91,6 +91,8 @@ Verify Connection
     ./mvnw test jacoco:report
     ```
 
+2. Go to 👉 `/target/site/jacoco/index.html`
+
 ### 🧩 [Swagger UI](https://swagger.io/)
 
 Run Swagger UI
@@ -118,3 +120,5 @@ Commands for generate JavaDoc documentation
     ```bash
     mvn javadoc:aggregate
     ```
+
+2. Go to 👉 `/target/site/apidocs/index.html`
