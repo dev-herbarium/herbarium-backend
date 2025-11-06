@@ -14,6 +14,65 @@ The objective of this final project will be to meet the following key requiremen
 4. **Personal Herbarium (Dashboard):** A private area for users to view their favorites and manage their custom recipes.
 5. **Recipe Management:** Create, Read, Update, and Delete (CRUD) personal herbal recipes associated with specific plants.
 
+## ✍️ Technical Diagrams for Herbarium Application
+
+### Types of diagrams
+
+#### 1. Architecture Overview
+
+* A simple diagram showing the overall structure and flow of the full-stack web application.
+* It is divided into **React Frontend** <-> **Spring Boot Backend** <-> **MySQL Database**, with the Backend also calling the **External Perenual API**.
+
+```mermaid
+graph TB
+    %% Frontend Layer
+    subgraph "React Frontend"
+        A[React Components]
+        B[Vite Dev Server]
+        C[Vitest Tests]
+    end
+    
+    %% Backend Layer
+    subgraph "Spring Boot Backend"
+        D[Rest Controllers]
+        E[Spring Services]
+        F[Spring Security]
+        G[JPA Repositories]
+    end
+    
+    %% Database Layer
+    subgraph "MySQL Database"
+        H[(Users Table)]
+        I[(Recipes Table)]
+        J[(Favorites Table)]
+    end
+    
+    %% External API
+    subgraph "External API"
+        K[Perenual API<br/><a href='https://perenual.com'>https://perenual.com</a>]
+    end
+    
+    %% Data Flow
+    A <-->|HTTP REST API<br/>JSON| D
+    D <-->|Business Logic| E
+    E <-->|Data Access| G
+    G <-->|JDBC| H
+    G <-->|JDBC| I
+    G <-->|JDBC| J
+    E <-->|HTTP Requests<br/>Plant Data| K
+    
+    %% Styling
+    classDef frontend fill:#61dafb,color:black
+    classDef backend fill:#6db33f,color:white
+    classDef database fill:#00758f,color:white
+    classDef external fill:#ff6b6b,color:white
+    
+    class A,B,C frontend
+    class D,E,F,G backend
+    class H,I,J database
+    class K external
+```
+
 ## ℹ️ About
 
 This project is part of the [Full Stack Web Development training program](https://factoriaf5.org/aprende/desarrollo-web-full-stack-asturias/) in [Asturias](https://en.wikipedia.org/wiki/Asturias), offered by [Factoría F5](https://factoriaf5.org/).
